@@ -1,0 +1,23 @@
+---
+- name: Deploy artifact to Nginx
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Copy artifact to Nginx directory
+      copy:
+        src: /path/to/artifact
+        dest: /usr/share/nginx/html/
+      become: yes
+
+    - name: Ensure proper ownership and permissions
+      file:
+        path: /usr/share/nginx/html/artifact
+        owner: nginx
+        group: nginx
+        mode: "0644"
+      become: yes
+
+    - name: Reload Nginx to apply changes
+      service:
+        name: nginx
+        state: reloaded
